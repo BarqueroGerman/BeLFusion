@@ -1,0 +1,144 @@
+{
+    "dataset_name": "amass",
+    "precomputed_folder": "./auxiliar/datasets/AMASS",
+    "landmarks": 21,
+    "dims": 3,
+    "eval_dims": 3,
+    "obs_length": 30,
+    "pred_length": 120,
+    "data_loader_training": {
+        "type": "AMASSDataLoader",
+        "args": {
+            "drop_root": true,
+            "stride": 60,
+            "augmentation": 30,
+            "shuffle": true,
+            "annotations_folder": "./datasets/single/AMASS/",
+            "datasets": [
+                "ACCAD",
+                "BMLhandball",
+                "BMLmovi",
+                "BMLrub",
+                "CMU",
+                "EKUT",
+                "EyesJapanDataset",
+                "KIT",
+                "PosePrior",
+                "TCDHands",
+                "TotalCapture",
+                "HumanEva",
+                "HDM05",
+                "SFU",
+                "MoSh"
+            ],
+            "file_idces": "all",
+            "da_mirroring": 0.5,
+            "da_rotations": 1.0
+        }
+    },
+    "data_loader_test": {
+        "type": "AMASSDataLoader",
+        "args": {
+            "drop_root": true,
+            "shuffle": false,
+            "annotations_folder": "./datasets/single/AMASS/",
+            "segments_path": "./auxiliar/datasets/AMASS/segments_test.csv",
+            "drop_last": false
+        }
+    },
+    "name": "BeLFusion_AMASS",
+    "n_gpu": 1,
+    "normalize_data": false,
+    "normalize_type": "normalize",
+    "dtype": "float32",
+    "arch": {
+        "type": "LatentUNetMatcher",
+        "args": {
+            "embedder_obs_path": "checkpoints/ours/amass/BeLFusion/final_model/autoencoder_obs/checkpoint-epoch500.pth",
+            "embedder_pred_path": "checkpoints/ours/amass/BeLFusion/final_model/behavioral_latent_space/checkpoint-epoch1000.pth",
+            "freeze_obs_encoder": true,
+            "emb_preprocessing": "normalize",
+            "emb_height": 16,
+            "emb_width": 8,
+            "cond_embed_dim": 64,
+            "attention_resolutions": [
+                8,
+                4
+            ],
+            "model_channels": 32,
+            "num_head_channels": 16,
+            "num_res_blocks": 1,
+            "resblock_updown": true,
+            "use_new_attention_order": true,
+            "use_scale_shift_norm": true,
+            "dtype": "float32",
+            "dropout": 0
+        }
+    },
+    "diffusion": {
+        "type": "LatentDiffusion",
+        "args": {
+            "k": 50,
+            "alpha": 50,
+            "p": 2,
+            "steps": 10,
+            "noise_schedule": "sqrt1e-4",
+            "predict": "start_x",
+            "var_type": "fixed_large",
+            "rescale_timesteps": false,
+            "noise_std": 1,
+            "losses": [
+                "mse_l1",
+                "mse"
+            ],
+            "losses_multipliers": [
+                1,
+                1
+            ],
+            "losses_schedulers": [
+                "constant",
+                "constant"
+            ],
+            "losses_decoded": [
+                false,
+                true
+            ],
+            "target_residuals": false
+        }
+    },
+    "optimizer": {
+        "type": "Adam",
+        "args": {
+            "lr": 0.0005,
+            "weight_decay": 0,
+            "amsgrad": true
+        }
+    },
+    "lr_scheduler": {
+        "type": "StepLR",
+        "args": {
+            "step_size": 100,
+            "gamma": 0.9
+        }
+    },
+    "trainer": {
+        "ema_active": true,
+        "ema_decay": 0.999,
+        "step_start_ema": 1000,
+        "update_ema_every": 10,
+        "batch_size": 64,
+        "samples_epoch": 10000,
+        "num_workers": 4,
+        "epochs": 1262,
+        "save_period": 10,
+        "verbosity": 1,
+        "monitor": "min val_loss",
+        "early_stop": -1,
+        "validation_frequency": -1,
+        "num_samples_to_track": 10,
+        "tracking_period": 2001,
+        "tensorboard": true
+    },
+    "seed": 6,
+    "unique_id": "221102_235044_693"
+}

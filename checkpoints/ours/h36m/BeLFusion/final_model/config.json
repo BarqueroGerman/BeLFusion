@@ -1,0 +1,134 @@
+{
+    "dataset_name": "h36m",
+    "precomputed_folder": "./auxiliar/datasets/Human36M",
+    "landmarks": 16,
+    "dims": 3,
+    "eval_dims": 3,
+    "obs_length": 25,
+    "pred_length": 100,
+    "data_loader_training": {
+        "type": "H36MDataLoader",
+        "args": {
+            "drop_root": true,
+            "stride": 10,
+            "augmentation": 5,
+            "shuffle": true,
+            "annotations_folder": "./datasets/single/Human3.6/",
+            "subjects": [
+                "S1",
+                "S5",
+                "S6",
+                "S7",
+                "S8"
+            ],
+            "actions": "all",
+            "da_mirroring": 0.5,
+            "da_rotations": 1.0
+        }
+    },
+    "data_loader_test": {
+        "type": "H36MDataLoader",
+        "args": {
+            "drop_root": true,
+            "shuffle": false,
+            "annotations_folder": "./datasets/single/Human3.6/",
+            "segments_path": "./auxiliar/datasets/Human36M/segments_test.csv",
+            "drop_last": false
+        }
+    },
+    "name": "BeLFusion_H36M",
+    "n_gpu": 1,
+    "normalize_data": false,
+    "normalize_type": "normalize",
+    "dtype": "float32",
+    "arch": {
+        "type": "LatentUNetMatcher",
+        "args": {
+            "embedder_obs_path": "checkpoints/ours/h36m/BeLFusion/final_model/autoencoder_obs/checkpoint-epoch500.pth",
+            "embedder_pred_path": "checkpoints/ours/h36m/BeLFusion/final_model/behavioral_latent_space/checkpoint-epoch1000.pth",
+            "freeze_obs_encoder": true,
+            "emb_preprocessing": "normalize",
+            "emb_height": 16,
+            "emb_width": 8,
+            "cond_embed_dim": 64,
+            "attention_resolutions": [
+                8,
+                4
+            ],
+            "model_channels": 32,
+            "num_head_channels": 16,
+            "num_res_blocks": 1,
+            "resblock_updown": true,
+            "use_new_attention_order": true,
+            "use_scale_shift_norm": true,
+            "dtype": "float32",
+            "dropout": 0
+        }
+    },
+    "diffusion": {
+        "type": "LatentDiffusion",
+        "args": {
+            "k": 50,
+            "alpha": 50,
+            "p": 2,
+            "steps": 10,
+            "noise_schedule": "sqrt1e-4",
+            "predict": "start_x",
+            "var_type": "fixed_large",
+            "rescale_timesteps": false,
+            "noise_std": 1,
+            "losses": [
+                "mse_l1",
+                "mse"
+            ],
+            "losses_multipliers": [
+                1,
+                5
+            ],
+            "losses_schedulers": [
+                "constant",
+                "constant"
+            ],
+            "losses_decoded": [
+                false,
+                true
+            ],
+            "target_residuals": false
+        }
+    },
+    "optimizer": {
+        "type": "Adam",
+        "args": {
+            "lr": 0.0005,
+            "weight_decay": 0,
+            "amsgrad": true
+        }
+    },
+    "lr_scheduler": {
+        "type": "StepLR",
+        "args": {
+            "step_size": 100,
+            "gamma": 0.9
+        }
+    },
+    "trainer": {
+        "ema_active": true,
+        "ema_decay": 0.999,
+        "step_start_ema": 1000,
+        "update_ema_every": 10,
+        "batch_size": 64,
+        "samples_epoch": 10000,
+        "num_workers": 4,
+        "epochs": 217,
+        "save_period": 10,
+        "verbosity": 1,
+        "monitor": "min val_loss",
+        "early_stop": -1,
+        "validation_frequency": -1,
+        "num_samples_to_track": 10,
+        "tracking_period": 2001,
+        "tensorboard": true
+    },
+    "seed": 6,
+    "unique_id": "230203_122929_281"
+}

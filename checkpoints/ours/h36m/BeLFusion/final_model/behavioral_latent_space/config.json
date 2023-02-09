@@ -1,0 +1,149 @@
+{
+    "aux_optimizer": {
+        "args": {
+            "amsgrad": true,
+            "lr": 0.0005,
+            "weight_decay": 0
+        },
+        "type": "Adam"
+    },
+    "loss": {
+        "args": {
+            "beta": 0.0001,
+            "delta": 1.05,
+            "n_dims": 3
+        },
+        "type": "BehaviorNet_loss"
+    },
+    "optimizer": {
+        "args": {
+            "amsgrad": true,
+            "lr": 0.005,
+            "weight_decay": 0
+        },
+        "type": "Adam"
+    },
+    "dataset_name": "h36m",
+    "precomputed_folder": "./auxiliar/datasets/Human36M",
+    "landmarks": 16,
+    "dims": 3,
+    "eval_dims": 3,
+    "obs_length": 103,
+    "pred_length": 103,
+    "wandb": {
+        "project": "sbf_h36m_auto_bds",
+        "store": true,
+        "tags": [
+            ""
+        ],
+        "description": ""
+    },
+    "data_loader_training": {
+        "type": "H36MDataLoader_Auto",
+        "args": {
+            "drop_root": true,
+            "stride": 10,
+            "augmentation": 5,
+            "shuffle": true,
+            "annotations_folder": "./datasets/single/Human3.6/",
+            "subjects": [
+                "S1",
+                "S5",
+                "S6",
+                "S7",
+                "S8"
+            ],
+            "actions": "all",
+            "da_mirroring": 0.5,
+            "da_rotations": 1.0
+        }
+    },
+    "data_loader_test": {
+        "type": "H36MDataLoader_Auto",
+        "args": {
+            "drop_root": true,
+            "stride": 100,
+            "augmentation": 0,
+            "shuffle": false,
+            "annotations_folder": "./datasets/single/Human3.6/",
+            "subjects": [
+                "S9",
+                "S11"
+            ],
+            "actions": "all",
+            "drop_last": false
+        }
+    },
+    "metrics": [],
+    "name": "BLS_H36M",
+    "n_gpu": 1,
+    "normalize_data": false,
+    "dtype": "float32",
+    "arch": {
+        "type": "ResidualBehaviorNet",
+        "args": {
+            "dim_hidden_b": 128,
+            "dim_decoder_state": 128,
+            "dim_linear_enc": 128,
+            "context_length": 3,
+            "decoder_arch": "gru",
+            "linear_nin_decoder": false,
+            "residual": true,
+            "recurrent": false
+        }
+    },
+    "aux_arch": {
+        "type": "DecoderBehaviorNet",
+        "args": {
+            "dim_hidden_b": 128,
+            "dim_hidden_state": 128,
+            "decoder_arch": "gru",
+            "linear_nin_decoder": false
+        }
+    },
+    "aux_loss": {
+        "type": "Full_MSE",
+        "args": {
+            "n_dims": 3
+        }
+    },
+    "lr_scheduler": {
+        "type": "StepLR",
+        "args": {
+            "step_size": 50,
+            "gamma": 0.9
+        }
+    },
+    "lr_scheduler_refinement": {
+        "type": "StepLR",
+        "args": {
+            "step_size": 25,
+            "gamma": 0.9
+        }
+    },
+    "aux_lr_scheduler": {
+        "type": "StepLR",
+        "args": {
+            "step_size": 50,
+            "gamma": 0.9
+        }
+    },
+    "trainer": {
+        "recover_landmarks": false,
+        "batch_size": 64,
+        "samples_epoch": 5000,
+        "num_workers": 4,
+        "epochs": 500,
+        "epochs_refine": 500,
+        "save_period": 25,
+        "verbosity": 1,
+        "monitor": "min val_loss",
+        "early_stop": -1,
+        "validation_frequency": -1,
+        "num_samples_to_track": 2,
+        "tracking_period": 501,
+        "tensorboard": true
+    },
+    "seed": 6,
+    "unique_id": "221012_195531_810"
+}

@@ -1,0 +1,103 @@
+{
+    "dataset_name": "h36m",
+    "precomputed_folder": "./auxiliar/datasets/Human36M",
+    "landmarks": 16,
+    "dims": 3,
+    "eval_dims": 3,
+    "obs_length": 26,
+    "pred_length": 26,
+    "data_loader_training": {
+        "type": "H36MDataLoader_Auto",
+        "args": {
+            "drop_root": true,
+            "stride": 10,
+            "augmentation": 5,
+            "shuffle": true,
+            "annotations_folder": "./datasets/single/Human3.6/",
+            "subjects": [
+                "S1",
+                "S5",
+                "S6",
+                "S7",
+                "S8"
+            ],
+            "actions": "all",
+            "da_mirroring": 0.5,
+            "da_rotations": 1.0
+        }
+    },
+    "data_loader_test": {
+        "type": "H36MDataLoader_Auto",
+        "args": {
+            "drop_root": true,
+            "stride": 25,
+            "augmentation": 0,
+            "shuffle": false,
+            "annotations_folder": "./datasets/single/Human3.6/",
+            "subjects": [
+                "S9",
+                "S11"
+            ],
+            "actions": "all",
+            "drop_last": false
+        }
+    },
+    "metrics": [],
+    "name": "AutoEncObs_H36M",
+    "n_gpu": 1,
+    "normalize_data": false,
+    "dtype": "float32",
+    "arch": {
+        "type": "Seq2Seq_Auto",
+        "args": {
+            "nh_mlp": [
+                300,
+                200
+            ],
+            "nh_rnn": 64,
+            "recurrent": true,
+            "residual": true,
+            "rnn_type": "gru",
+            "use_drnn_mlp": true,
+            "dropout": 0.0
+        }
+    },
+    "optimizer": {
+        "type": "Adam",
+        "args": {
+            "lr": 0.001,
+            "weight_decay": 0.0,
+            "amsgrad": true
+        }
+    },
+    "loss": {
+        "type": "mse_loss",
+        "args": {
+            "n_dims": 3
+        }
+    },
+    "lr_scheduler": {
+        "type": "StepLR",
+        "args": {
+            "step_size": 500,
+            "gamma": 0.8
+        }
+    },
+    "trainer": {
+        "recover_landmarks": false,
+        "batch_size": 64,
+        "samples_epoch": 5000,
+        "num_workers": 4,
+        "epochs": 500,
+        "save_period": 25,
+        "verbosity": 1,
+        "monitor": "min val_loss",
+        "early_stop": -1,
+        "validation_frequency": -1,
+        "num_samples_to_track": 1,
+        "tracking_period": 200,
+        "tensorboard": true
+    },
+    "seed": 6,
+    "unique_id": "230203_150654_233"
+}

@@ -1,0 +1,156 @@
+{
+    "aux_optimizer": {
+        "args": {
+            "amsgrad": true,
+            "lr": 0.005,
+            "weight_decay": 0
+        },
+        "type": "Adam"
+    },
+    "loss": {
+        "args": {
+            "beta": 0.0001,
+            "delta": 1,
+            "n_dims": 3
+        },
+        "type": "BehaviorNet_loss"
+    },
+    "optimizer": {
+        "args": {
+            "amsgrad": true,
+            "lr": 0.001,
+            "weight_decay": 0
+        },
+        "type": "Adam"
+    },
+    "dataset_name": "amass",
+    "precomputed_folder": "./auxiliar/datasets/AMASS",
+    "landmarks": 21,
+    "dims": 3,
+    "eval_dims": 3,
+    "obs_length": 123,
+    "pred_length": 123,
+    "data_loader_training": {
+        "type": "AMASSDataLoader_Auto",
+        "args": {
+            "drop_root": true,
+            "stride": 10,
+            "augmentation": 5,
+            "shuffle": true,
+            "annotations_folder": "./datasets/single/AMASS/",
+            "datasets": [
+                "ACCAD",
+                "BMLhandball",
+                "BMLmovi",
+                "BMLrub",
+                "CMU",
+                "EKUT",
+                "EyesJapanDataset",
+                "KIT",
+                "PosePrior",
+                "TCDHands",
+                "TotalCapture",
+                "HumanEva",
+                "HDM05",
+                "SFU",
+                "MoSh"
+            ],
+            "file_idces": "all",
+            "da_mirroring": 0.5,
+            "da_rotations": 1.0
+        }
+    },
+    "data_loader_test": {
+        "type": "AMASSDataLoader_Auto",
+        "args": {
+            "drop_root": true,
+            "stride": 400,
+            "augmentation": 0,
+            "shuffle": false,
+            "annotations_folder": "./datasets/single/AMASS/",
+            "datasets": [
+                "Transitions",
+                "SSM",
+                "DFaust",
+                "DanceDB",
+                "GRAB",
+                "HUMAN4D",
+                "SOMA"
+            ],
+            "file_idces": "all",
+            "drop_last": false
+        }
+    },
+    "metrics": [],
+    "name": "BLS_AMASS",
+    "n_gpu": 1,
+    "normalize_data": false,
+    "dtype": "float32",
+    "arch": {
+        "type": "ResidualBehaviorNet",
+        "args": {
+            "dim_hidden_b": 128,
+            "dim_decoder_state": 128,
+            "dim_linear_enc": 128,
+            "context_length": 3,
+            "decoder_arch": "gru",
+            "linear_nin_decoder": false,
+            "residual": true,
+            "recurrent": false
+        }
+    },
+    "aux_arch": {
+        "type": "DecoderBehaviorNet",
+        "args": {
+            "dim_hidden_b": 128,
+            "dim_hidden_state": 128,
+            "decoder_arch": "gru",
+            "linear_nin_decoder": false
+        }
+    },
+    "aux_loss": {
+        "type": "Full_MSE",
+        "args": {
+            "n_dims": 3
+        }
+    },
+    "lr_scheduler": {
+        "type": "StepLR",
+        "args": {
+            "step_size": 50,
+            "gamma": 0.9
+        }
+    },
+    "lr_scheduler_refinement": {
+        "type": "StepLR",
+        "args": {
+            "step_size": 25,
+            "gamma": 0.9
+        }
+    },
+    "aux_lr_scheduler": {
+        "type": "StepLR",
+        "args": {
+            "step_size": 50,
+            "gamma": 0.9
+        }
+    },
+    "trainer": {
+        "recover_landmarks": false,
+        "batch_size": 64,
+        "samples_epoch": 10000,
+        "num_workers": 4,
+        "epochs": 500,
+        "epochs_refine": 500,
+        "save_period": 25,
+        "verbosity": 1,
+        "monitor": "min val_loss",
+        "early_stop": -1,
+        "validation_frequency": -1,
+        "num_samples_to_track": 2,
+        "tracking_period": 501,
+        "tensorboard": true
+    },
+    "seed": 6,
+    "unique_id": "221013_134210_198"
+}
