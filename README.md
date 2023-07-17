@@ -1,13 +1,21 @@
 # BeLFusion
-### Latent Diffusion for Behavior-Driven Human Motion Prediction
+### Latent Diffusion for Behavior-Driven Human Motion Prediction (ICCV'23)
+<a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white"></a> 
+[![arXiv](https://img.shields.io/badge/arXiv-2210.06551-b31b1b.svg)](https://arxiv.org/abs/2211.14304)
+<a href="https://barquerogerman.github.io/BeLFusion/"><img alt="Project" src="https://img.shields.io/badge/-Project%20Page-lightgrey?logo=Google%20Chrome&color=informational&logoColor=white"></a>
+<br>
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/belfusion-latent-diffusion-for-behavior/human-pose-forecasting-on-amass)](https://paperswithcode.com/sota/human-pose-forecasting-on-amass?p=belfusion-latent-diffusion-for-behavior)
+<br>
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/belfusion-latent-diffusion-for-behavior/human-pose-forecasting-on-human36m)](https://paperswithcode.com/sota/human-pose-forecasting-on-human36m?p=belfusion-latent-diffusion-for-behavior)
 <br>
 
 ![BeLFusion's architecture](assets/arch.png)
 
-This repository contains the code for our paper:
+This repository contains the official PyTorch implementation of the paper:
 
 **BeLFusion: Latent Diffusion for Behavior-Driven Human Motion Prediction**<br>
 *German Barquero, Sergio Escalera, and Cristina Palmero*<br>
+**ICCV 2023**<br>
 [[website](https://barquerogerman.github.io/BeLFusion/)] [[paper](https://arxiv.org/abs/2211.14304)] [[demo](https://barquerogerman.github.io/BeLFusion/)]
 
 **Note**: our data loaders consider an extra dimension for the number of people in the scene. Since the project aims at single-human motion prediction, this dimension is always 1.
@@ -143,11 +151,11 @@ python train_belfusion.py -c checkpoints/ours/<DATASET>/BeLFusion/final_model/co
 ## Citation
 If you find our work useful in your research, please consider citing our paper:
 ```
-@article{barquero2022belfusion,
+@article{barquero2023belfusion,
   title={BeLFusion: Latent Diffusion for Behavior-Driven Human Motion Prediction},
   author={Barquero, German and Escalera, Sergio and Palmero, Cristina},
-  journal={arXiv preprint arXiv:2211.14304},
-  year={2022}
+  journal={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  year={2023}
 }
 ```
 
