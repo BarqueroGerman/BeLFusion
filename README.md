@@ -151,10 +151,10 @@ python train_belfusion.py -c checkpoints/ours/<DATASET>/BeLFusion/final_model/co
 ## Citation
 If you find our work useful in your research, please consider citing our paper:
 ```
-@article{barquero2023belfusion,
+@inproceedings{barquero2023belfusion,
   title={BeLFusion: Latent Diffusion for Behavior-Driven Human Motion Prediction},
   author={Barquero, German and Escalera, Sergio and Palmero, Cristina},
-  journal={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
   year={2023}
 }
 ```
