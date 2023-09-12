@@ -9,7 +9,7 @@
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/belfusion-latent-diffusion-for-behavior/human-pose-forecasting-on-human36m)](https://paperswithcode.com/sota/human-pose-forecasting-on-human36m?p=belfusion-latent-diffusion-for-behavior)
 <br>
 
-![BeLFusion's architecture](assets/arch.png)
+![BeLFusion's architecture](assets/intro.png)
 
 This repository contains the official PyTorch implementation of the paper:
 
