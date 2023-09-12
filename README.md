@@ -110,6 +110,8 @@ python eval_baseline.py -c checkpoints/baselines/amass/<BASELINE_NAME>/exp -m st
 
 
 ## Visualization
+![BeLFusion's architecture](assets/A_103_Transitions.gif)
+
 Run the following scripts to visualize the results of BeLFusion and the other state-of-the-art methods (\<DATASET\> in {`h36m`, `amass`}).
 
 ```
